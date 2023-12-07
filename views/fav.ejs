@@ -1,0 +1,20 @@
+<!-- views/fav.ejs -->
+<%- include('./partials/header.ejs') %>
+<body>
+    <div id="div-signup">    
+        <h1><%= title %></h1>
+        <% if (error) { %>
+            <p style="color: red;"><%= error %></p>
+        <% } %> <br><br>
+        <form id="form-signup" action="/fav" method="POST">
+            <label for="description">Descrição:</label><br><br>
+            <input type="text" id="description" name="description" required><br><br>
+            <% if (trackingData && trackingData.codigo) { %>
+                <input type="hidden" id="code" name="code" value="<%= trackingData.codigo %>">
+            <% } %>
+            <button type="submit">Cadastrar</button>
+        </form>
+        <p><a class="btn-back-modal" href="#" onclick="closeSignupModal()">Voltar</a></p>
+    </div>
+</body>
+</html>

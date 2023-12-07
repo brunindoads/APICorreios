@@ -1,0 +1,22 @@
+<!-- views/dashboard.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('./partials/header.ejs') %>
+<body>
+    <div id="dashboard">
+        <h1><%= title %></h1>
+        <img src="/img/lg_correios.png" class="img-dashboard">
+        <p>Bem-vindo, <%= user.name %>!</p>
+        <form id="form-track" action="/track" method="POST">
+            <label for="code">Código de Rastreio:</label><br>
+            <input type="text" id="code" name="code" required>
+            <br><br>
+            <button class="btn-track" type="submit">Rastrear</button>
+        </form>        
+    </div>
+    <div class="btn-container"> <!-- Nova div com uma classe para envolver o botão -->
+        <a class="link-btn" href="/packages">Listar Encomendas</a>
+        <a class="link-btn" href="/logout">Logout</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!-- views/packages.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('./partials/header.ejs') %>
+    <body>
+        <div id="track">
+            <h1>Lista de Encomendas</h1>
+            <% if (packages.length > 0) { %>
+                <ul id="packages">
+                    <% packages.forEach(pkg => { %>
+                        <li>
+                            <form action="/track" method="post">
+                                <input type="hidden" name="code" value="<%= pkg.code %>">
+                                <h2><button class="btn-description" type="submit"><%= pkg.description %></button></h2>
+                            </form>
+                            <form action="/delete" method="post" onsubmit="return confirmDelete();">
+                                <input type="hidden" name="code" value="<%= pkg.code %>">
+                                <button class="btn-delete" type="submit">🗑</button>
+                            </form>
+                            Código: <%= pkg.code %>                           
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>Nenhuma encomenda cadastrada.</p>
+            <% } %>
+            <br>
+            <a href="/dashboard">Voltar para o Dashboard</a>
+        </div>
+
+        <script>
+            function confirmDelete() {
+                return confirm("Tem certeza que deseja excluir esta encomenda?");
+            }
+        </script>
+        
+    </body>
+</html>

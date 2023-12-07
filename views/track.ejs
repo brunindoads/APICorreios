@@ -1,0 +1,76 @@
+<!-- views/track.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('./partials/header.ejs') %>
+<body>
+    <div id="track">
+        <h1>
+            Rastreamento do Pacote <%= trackingData.codigo %><button class="favorite-button" onclick="openSignupModal('<%= trackingData.codigo %>')">⭐</button>
+        </h1>
+
+        <a href="/dashboard">Ir para o Dashboard</a> <a href="/packages">Ir para a Listagem</a>
+
+        <% if (trackingData.eventos && trackingData.eventos.length > 0) { %>
+            <ul>
+                <% trackingData.eventos.forEach(function(evento) { %>
+                    <li>
+                        <p>Data: <%= evento.data %></p>
+                        <p>Hora: <%= evento.hora %></p>
+                        <p>Local: <%= evento.local %></p>
+                        <p>Status: <%= evento.status %></p>
+                        <% if (evento.subStatus && evento.subStatus.length > 0) { %>
+                            <ul>
+                                <% evento.subStatus.forEach(function(subStatus) { %>
+                                    <li><%= subStatus %></li>
+                                <% }); %>
+                            </ul>
+                        <% } %>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>Não há eventos de rastreamento disponíveis para este pacote.</p>
+        <% } %>
+
+        <a href="/dashboard">Ir para o Dashboard</a> <a href="/packages">Ir para a Listagem</a>
+
+    <!-- Modal para exibir o conteúdo do fav.ejs -->
+    <div id="signupModal" class="modal">
+        <div id="signupModalContent"></div>
+    </div>    
+
+    <script>
+        // Função para abrir o modal de fav
+        async function openSignupModal(trackingCode) {
+            try {
+                // Carrega o conteúdo do arquivo fav.ejs usando fetch
+                const response = await fetch(`/fav-content?code=${trackingCode}`);
+                const content = await response.text();
+
+                // Verifica se o conteúdo parece ser um JSON válido
+                try {
+                    const jsonContent = JSON.parse(content);
+                    // Se conseguir analisar o conteúdo como JSON, exibe a mensagem de erro
+                    document.getElementById('signupModalContent').innerHTML = `<p style="color: red;">${jsonContent.error}</p>`;
+                } catch (error) {
+                    // Se não puder analisar como JSON, assume que é o HTML do fav.ejs
+                    document.getElementById('signupModalContent').innerHTML = content;
+                }
+
+                // Exibe o modal
+                document.getElementById('signupModal').style.display = 'flex';
+            } catch (error) {
+                console.error('Erro ao carregar o conteúdo do fav.ejs', error);
+            }
+        }
+    
+        function closeSignupModal() {
+            // Oculta o modal
+            document.getElementById('signupModal').style.display = 'none';
+        }
+    </script>
+    
+    
+
+</body>
+</html>
